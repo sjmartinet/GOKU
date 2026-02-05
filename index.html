@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOKU · Asistente Académico Virtual</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+:root {
+  --primary: #0033a0;
+  --accent: #0052cc;
+  --bg: #f4f6fb;
+  --card: #e3f2fd;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --success: #10b981;
+  --danger: #ef4444;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* LOGIN */
+#loginScreen {
+  min-height: 100vh;
+  background: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
+              url("https://blog.erikstore.com/wp-content/uploads/2023/05/Tranformaciones-son-goku-dragon-ball.jpg");
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-card {
+  background: white;
+  border-radius: 26px;
+  padding: 50px 36px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,.4);
+}
+.login-card img.logo { max-height: 220px; margin-bottom: 20px; }
+.google-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.google-btn img { width: 26px; height: 26px; }
+
+/* DASHBOARD */
+#dashboard { display: none; }
+.topbar {
+  background: white;
+  padding: 20px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.brand {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--primary);
+}
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.icon-btn {
+  font-size: 22px;
+  color: var(--primary);
+  cursor: pointer;
+  position: relative;
+}
+.icon-btn .badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--danger);
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.banner {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* Semestres */
+.semesters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+.semester-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  cursor: pointer;
+  transition: all .25s;
+  text-align: center;
+}
+.semester-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.12);
+}
+.semester-card h3 { margin: 0 0 8px; color: var(--primary); }
+.current-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--success);
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100% {opacity:1} 50% {opacity:0.4} }
+.add-semester-card {
+  border: 2px dashed var(--muted);
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.5em;
+}
+
+/* Materias */
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 130px)); 
+  gap: 10px;
+  margin: 16px 0;
+  justify-content: center;
+}
+
+.subject-card {
+  background: var(--card);
+  border-radius: 12px; /* Un poco más redondeado para el look pastel */
+  padding: 8px;
+  /* Sombra más suave y azulada para combinar */
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.08); 
+  cursor: pointer;
+  text-align: center;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.25s ease;
+  overflow: hidden;
+  /* Un borde sutil ayuda a que no se vea "lavado" */
+  border: 1px solid rgba(25, 118, 210, 0.1);
+}
+
+.subject-card:hover {
+  transform: translateY(-4px);
+  background: #bbdefb; /* Un celeste un poco más oscuro al pasar el mouse */
+  box-shadow: 0 8px 20px rgba(25, 118, 210, 0.15);
+}
+
+.subject-card h4 {
+  margin: 0;
+  color: var(--primary);
+  font-weight: 700; 
+  text-transform: uppercase; /* Opcional: le da un look de etiqueta limpia */
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.subject-card .delete-subject {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: white; /* Fondo blanco para que resalte en el azul */
+  color: var(--danger);
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.subject-card:hover .delete-subject {
+  display: flex;
+  opacity: 1;
+}
+
+/* Evaluaciones */
+.evals-list .eval-item {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  position: relative;
+}
+.eval-item .grade-input {
+  margin-top: 6px;
+  width: 60px;
+  padding: 4px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+}
+
+/* Progress */
+.progress-bar {
+  background: #e5e7eb;
+  border-radius: 8px;
+  height: 8px;
+  margin: 12px 0;
+  position: relative;
+}
+.progress-fill {
+  background: var(--success);
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.3s;
+}
+
+/* Próximos eventos */
+.upcoming-panel {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 32px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+}
+.upcoming-item {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.upcoming-item:last-child { border-bottom: none; }
+
+/* Botones */
+.add-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin: 10px 0;
+}
+.add-btn:hover { background: var(--accent); }
+.back-btn {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.back-btn:hover { background: rgba(0,51,160,0.05); }
+
+/* Toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+  margin-left: 10px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #ccc;
+  transition: .4s;
+  border-radius: 22px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .slider { background: var(--success); }
+input:checked + .slider:before { transform: translateX(22px); }
+
+/* Delete action */
+.delete-action {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s;
+}
+.delete-action:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 16px 32px rgba(0,0,0,.2);
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.modal-close:hover { color: var(--danger); }
+.modal-card input, .modal-card select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+}
+.primary-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  font-weight: 600;
+  cursor: pointer;
+}
+.primary-btn:hover { background: var(--accent); }
+
+/* Dropdown */
+#settingsDropdown {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  padding: 6px 0;
+  display: none;
+  min-width: 140px;
+  z-index: 100;
+}
+#settingsDropdown button {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+#settingsDropdown button:hover { background: #f3f4f6; }
+
+/* Notificaciones */
+.notification-item {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.95em;
+}
+.notification-item.unread {
+  background: #e3f2fd;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <img class="logo" src="https://www.superherotoystore.com/cdn/shop/articles/e33c2fa94c03efa06678116f80d62d0d_1c4bccf2-0e38-4f4c-8dcd-f51830857d15_600x.jpg">
+    <h2>GOKU</h2>
+    <p>Asistente Académico Virtual</p>
+    <button class="google-btn" id="googleLogin">
+      <img src="https://images.icon-icons.com/2429/PNG/512/google_logo_icon_147282.png">
+      Continuar con Google
+    </button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="brand">GOKU</div>
+    <div class="topbar-right">
+      <div class="icon-btn" id="notificationsBtn"><i class="fa-solid fa-bell"></i><span id="unreadBadge" class="badge" style="display:none;"></span></div>
+      <div class="avatar" id="avatar">U</div>
+      <div class="icon-btn" id="settingsBtn"><i class="fa-solid fa-gear"></i></div>
+    </div>
+  </div>
+
+  <div id="settingsDropdown">
+    <button id="editProfileBtn">Editar perfil</button>
+    <button id="logoutBtn">Cerrar sesión</button>
+  </div>
+
+  <div class="banner">
+    <h1>Bienvenido, <span id="userName"></span></h1>
+    <p id="currentSemesterText">Semestre actual: —</p>
+    <p id="currentDateTime"></p>
+    <p id="weekInfo">Semana actual: <strong><span id="currentWeek"></span></strong> | Próxima: <strong><span id="nextWeek"></span></strong></p>
+  </div>
+
+  <div class="container" id="homeView">
+    <div class="upcoming-panel">
+      <h2>Próximos eventos más cercanos</h2>
+      <div id="upcomingEventsList"></div>
+    </div>
+
+    <h2>Mis semestres</h2>
+    <div class="semesters-grid" id="semestersGrid"></div>
+  </div>
+
+  <div class="container" id="semesterView" style="display:none;">
+    <button class="back-btn" onclick="backToHome()">Volver al inicio</button>
+    <h2 id="semesterTitle" style="font-weight:900; letter-spacing:1px; color:var(--primary);"></h2>
+    <button class="add-btn" id="addSubjectBtn">+ Agregar materia</button>
+    <div class="subjects-grid" id="subjectsGrid"></div>
+    <h3 style="margin-top:32px;">Cronograma completo</h3>
+    <table style="width:100%; border-collapse:separate; border-spacing:0; margin-top:12px;">
+      <thead>
+        <tr>
+          <th>Fecha</th><th>Semana</th><th>Materia</th><th>Actividad</th><th>%</th><th>Nota</th><th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="cronogramaBody"></tbody>
+    </table>
+    <button class="delete-action" id="deleteSemesterBtn"><i class="fa-solid fa-trash"></i> Eliminar semestre</button>
+  </div>
+
+  <div class="container" id="subjectView" style="display:none;">
+    <button class="back-btn" onclick="backToSemester()">Volver al semestre</button>
+    <h2 id="subjectTitle" style="font-weight:900; letter-spacing:1px; color:var(--primary);"></h2>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+    </div>
+    <p>Progreso: <span id="progressPercent">0%</span> | Necesitas <span id="requiredGrade">—</span> para pasar (3.0 min)</p>
+    <button class="add-btn" id="addEvaluationBtn">+ Agregar evaluación</button>
+    <div class="evals-list" id="evalsList"></div>
+  </div>
+</div>
+
+<!-- Modales -->
+<div id="editProfileModal" class="modal">
+  <div class="modal-card">
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <h3>Editar perfil</h3>
+    <input id="newDisplayName" placeholder="Nombre visible">
+    <button class="primary-btn" id="saveProfileBtn">Guardar cambios</button>
+  </div>
+</div>
+
+<div id="addSemesterModal" class="modal">
+  <div class="modal-card">
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <h3>Nuevo semestre</h3>
+    <input id="semesterCode" placeholder="Ej: 2026-1">
+    <input id="semesterStartDate" type="date">
+    <input id="semesterEndDate" type="date">
+    <button class="primary-btn" id="saveSemesterBtn">Crear</button>
+  </div>
+</div>
+
+<div id="addSubjectModal" class="modal">
+  <div class="modal-card">
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <h3>Nueva materia</h3>
+    <input id="subjectNameInput" placeholder="Ej: Álgebra Lineal">
+    <button class="primary-btn" id="saveSubjectBtn">Agregar</button>
+  </div>
+</div>
+
+<div id="addEvaluationModal" class="modal">
+  <div class="modal-card">
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <h3>Nueva evaluación</h3>
+    <input id="evalNameInput" placeholder="Nombre (Quiz 1, Parcial, etc)">
+    <input id="evalDateInput" type="date">
+    <input id="evalWeekInput" type="number" placeholder="Semana">
+    <input id="evalPercentInput" type="number" placeholder="Porcentaje (ej: 20)">
+    <button class="primary-btn" id="saveEvalBtn">Guardar evaluación</button>
+  </div>
+</div>
+
+<div id="notificationsModal" class="modal">
+  <div class="modal-card">
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <h3>Notificaciones</h3>
+    <div id="notificationsList" style="max-height:400px; overflow-y:auto;"></div>
+  </div>
+</div>
+
+<div id="welcomeModal" class="modal">
+  <div class="modal-card" style="text-align:center;">
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <h2>¡Bienvenido a GOKU, Samuel! 🌟</h2>
+    <p>¡Qué alegría inmensa tenerte aquí con nosotros!</p>
+    <p>GOKU está diseñado con mucho cariño para acompañarte en este semestre y en todos los que vengan. Queremos verte organizado, motivado y alcanzando cada meta que te propongas. 💙</p>
+    <p>Registra tus materias, lleva control de tus evaluaciones y notas, recibe recordatorios útiles y mantén la disciplina alta. No estás solo: juntos vamos a hacer que este camino sea más claro, más ligero y lleno de victorias.</p>
+    <p>Gracias por elegir GOKU. Te deseamos un semestre espectacular, lleno de fuerza, buenos resultados y mucha buena vibra. ¡Tú puedes con todo y más! 🔥</p>
+    <p>Con todo el corazón,<br>El equipo de GOKU</p>
+    <button class="primary-btn" onclick="document.getElementById('welcomeModal').style.display='none'">¡Empecemos con toda la energía!</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc, Timestamp, query, orderBy, limit, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC-VMxhcl1Jq-Z7mYAjR4CmC2KoW-zUT0I",
+  authDomain: "agenda-academica-aed7f.firebaseapp.com",
+  projectId: "agenda-academica-aed7f"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+// DOM
+const loginScreen = document.getElementById("loginScreen");
+const dashboard = document.getElementById("dashboard");
+const userNameEl = document.getElementById("userName");
+const avatarEl = document.getElementById("avatar");
+const currentDateTimeEl = document.getElementById("currentDateTime");
+const currentWeekEl = document.getElementById("currentWeek");
+const nextWeekEl = document.getElementById("nextWeek");
+const weekInfoEl = document.getElementById("weekInfo");
+const currentSemesterTextEl = document.getElementById("currentSemesterText");
+const semestersGrid = document.getElementById("semestersGrid");
+const upcomingEventsList = document.getElementById("upcomingEventsList");
+const homeView = document.getElementById("homeView");
+const semesterView = document.getElementById("semesterView");
+const subjectView = document.getElementById("subjectView");
+const semesterTitle = document.getElementById("semesterTitle");
+const subjectsGrid = document.getElementById("subjectsGrid");
+const cronogramaBody = document.getElementById("cronogramaBody");
+const subjectTitle = document.getElementById("subjectTitle");
+const evalsList = document.getElementById("evalsList");
+const progressFill = document.getElementById("progressFill");
+const progressPercent = document.getElementById("progressPercent");
+const requiredGrade = document.getElementById("requiredGrade");
+const notificationsBtn = document.getElementById("notificationsBtn");
+const unreadBadge = document.getElementById("unreadBadge");
+const notificationsModal = document.getElementById("notificationsModal");
+const notificationsList = document.getElementById("notificationsList");
+const welcomeModal = document.getElementById("welcomeModal");
+
+let currentUser = null;
+let activeSemesterId = null;
+let activeSemesterCode = null;
+let activeSemesterStart = null;
+let activeSemesterEnd = null;
+let activeSubjectName = null;
+
+// Reloj
+function updateLiveClock() {
+  const now = new Date();
+  currentDateTimeEl.textContent = now.toLocaleString('es-CO', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true,
+    timeZone: 'America/Bogota'
+  }) + " — Bogotá";
+}
+setInterval(updateLiveClock, 1000);
+updateLiveClock();
+
+// Auth
+document.getElementById("googleLogin").onclick = () => signInWithPopup(auth, provider);
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUser = user;
+    loginScreen.style.display = 'none';
+    dashboard.style.display = 'block';
+    userNameEl.innerText = user.displayName || "Usuario";
+    avatarEl.innerText = (user.displayName || "U")[0].toUpperCase();
+    checkFirstLogin();
+    loadSemesters();
+    loadNotifications();
+    setInterval(checkReminders, 60000);
+    checkReminders();
+  } else {
+    dashboard.style.display = 'none';
+    loginScreen.style.display = 'flex';
+  }
+});
+
+// Verificar si es el primer login → mostrar bienvenida
+async function checkFirstLogin() {
+  const userDocRef = doc(db, `users/${currentUser.uid}`);
+  const userSnap = await getDoc(userDocRef);
+  if (!userSnap.exists() || !userSnap.data().welcomeShown) {
+    welcomeModal.style.display = 'flex';
+    await setDoc(userDocRef, { welcomeShown: true }, { merge: true });
+    // Notificación de bienvenida también
+    await addNotification("¡Bienvenido a GOKU! Gracias por estar aquí. Organiza tu semestre, lleva control de tus notas y alcanza tus metas con fuerza y buena vibra. ¡Vamos con todo! 💙🔥");
+  }
+}
+
+// Settings
+document.getElementById("settingsBtn").onclick = () => {
+  const dd = document.getElementById("settingsDropdown");
+  dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
+};
+
+document.getElementById("editProfileBtn").onclick = () => {
+  document.getElementById("settingsDropdown").style.display = 'none';
+  document.getElementById("editProfileModal").style.display = 'flex';
+};
+
+document.getElementById("logoutBtn").onclick = () => {
+  document.getElementById("settingsDropdown").style.display = 'none';
+  signOut(auth);
+};
+
+document.getElementById("saveProfileBtn").onclick = () => {
+  const name = document.getElementById("newDisplayName").value.trim();
+  if (name) {
+    updateProfile(currentUser, { displayName: name }).then(() => {
+      userNameEl.innerText = name;
+      avatarEl.innerText = name[0].toUpperCase();
+      document.getElementById("editProfileModal").style.display = 'none';
+    });
+  }
+};
+
+// Cerrar modales
+document.querySelectorAll(".modal").forEach(modal => {
+  modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+});
+
+// Cargar semestres (sin cambios)
+async function loadSemesters() {
+  semestersGrid.innerHTML = '';
+  const col = collection(db, `users/${currentUser.uid}/semesters`);
+  const snap = await getDocs(col);
+  let currentFound = false;
+
+  snap.forEach(docSnap => {
+    const data = docSnap.data();
+    const card = document.createElement('div');
+    card.className = 'semester-card';
+    card.innerHTML = `
+      <h3>${data.code}${data.isCurrent ? '<span class="current-indicator"></span>' : ''}</h3>
+      <p>${data.startDate} – ${data.endDate}</p>
+    `;
+    card.onclick = () => openSemester(docSnap.id, data.code, data.startDate, data.endDate, data.isCurrent, data.subjects || []);
+    semestersGrid.appendChild(card);
+
+    if (data.isCurrent) {
+      currentFound = true;
+      activeSemesterId = docSnap.id;
+      activeSemesterCode = data.code;
+      activeSemesterStart = new Date(data.startDate);
+      activeSemesterEnd = new Date(data.endDate);
+      currentSemesterTextEl.innerHTML = `Semestre actual: <strong>${data.code}</strong>`;
+      updateWeekInfo();
+      showUpcomingEvents(data.subjects || []);
+    }
+  });
+
+  const addCard = document.createElement('div');
+  addCard.className = 'semester-card add-semester-card';
+  addCard.innerHTML = '<i class="fa-solid fa-plus" style="font-size:2.5em;"></i><p>Nuevo</p>';
+  addCard.onclick = () => document.getElementById("addSemesterModal").style.display = 'flex';
+  semestersGrid.appendChild(addCard);
+
+  if (!currentFound && snap.size > 0) {
+    const firstId = snap.docs[0].id;
+    await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, firstId), { isCurrent: true });
+    loadSemesters();
+  }
+}
+
+// Update week
+function updateWeekInfo() {
+  const now = new Date();
+  if (now > activeSemesterEnd) {
+    weekInfoEl.innerHTML = '<strong style="color:var(--danger);">Semestre finalizado</strong>';
+    return;
+  }
+  const msPerWeek = 7 * 24 * 3600 * 1000;
+  const diff = now - activeSemesterStart;
+  let week = Math.floor(diff / msPerWeek) + 1;
+  if (week < 1) week = 1;
+  currentWeekEl.textContent = week;
+  nextWeekEl.textContent = week + 1;
+}
+
+// Upcoming
+function showUpcomingEvents(subjects) {
+  upcomingEventsList.innerHTML = "";
+  let evals = [];
+  subjects.forEach(s => (s.evaluations || []).forEach(e => evals.push({...e, subject:s.name})));
+  evals.sort((a,b) => new Date(a.date) - new Date(b.date));
+  const upcoming = evals.filter(e => new Date(e.date) >= new Date()).slice(0,5);
+  upcoming.forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'upcoming-item';
+    div.innerHTML = `
+      <i class="fa-solid fa-calendar-day" style="color:var(--primary);font-size:1.4em;"></i>
+      <div style="flex:1">
+        <strong>${e.name}</strong><br>
+        <small>${e.subject} • ${e.date} (Sem ${e.week})</small>
+      </div>
+      <strong style="color:var(--primary);">${e.percent}%</strong>
+    `;
+    upcomingEventsList.appendChild(div);
+  });
+  if (!upcoming.length) upcomingEventsList.innerHTML = '<p style="color:var(--muted);text-align:center;">No hay eventos próximos</p>';
+}
+
+// Add semester
+document.getElementById("saveSemesterBtn").onclick = async () => {
+  const code = document.getElementById("semesterCode").value.trim();
+  const start = document.getElementById("semesterStartDate").value;
+  const end = document.getElementById("semesterEndDate").value;
+  if (code && start && end) {
+    await addDoc(collection(db, `users/${currentUser.uid}/semesters`), {
+      code, startDate: start, endDate: end, isCurrent: false, subjects: []
+    });
+    await addNotification(`Nuevo semestre agregado: ${code}`);
+    document.getElementById("addSemesterModal").style.display = 'none';
+    loadSemesters();
+  }
+};
+
+// Open semester
+function openSemester(id, code, start, end, isCurrent, subjects) {
+  activeSemesterId = id;
+  activeSemesterCode = code;
+  activeSemesterStart = new Date(start);
+  activeSemesterEnd = new Date(end);
+  updateWeekInfo();
+
+  semesterTitle.innerHTML = `
+    ${code}
+    <label class="switch">
+      <input type="checkbox" ${isCurrent ? 'checked' : ''} onchange="toggleCurrent('${id}', this.checked)">
+      <span class="slider"></span>
+    </label>
+  `;
+
+  subjectsGrid.innerHTML = '';
+  cronogramaBody.innerHTML = '';
+
+  subjects.forEach((sub, subIndex) => {
+    const card = document.createElement('div');
+    card.className = 'subject-card';
+    card.innerHTML = `
+      <h4>${sub.name}</h4>
+      <button class="delete-subject" onclick="event.stopPropagation(); deleteSubject(${subIndex})">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    `;
+    card.querySelector('h4').onclick = () => openSubject(sub.name, sub.evaluations || []);
+    subjectsGrid.appendChild(card);
+
+    (sub.evaluations || []).forEach((ev, evIndex) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${ev.date}</td>
+        <td>${ev.week}</td>
+        <td>${sub.name}</td>
+        <td>${ev.name}</td>
+        <td>${ev.percent}%</td>
+        <td><input type="number" min="0" max="5" step="0.1" value="${ev.grade || ''}" onchange="updateGrade('${sub.name}', ${evIndex}, this.value)" style="width:50px;"></td>
+        <td><button onclick="deleteEval('${sub.name}', ${evIndex})" style="background:var(--danger);color:white;border:none;padding:4px 8px;border-radius:4px;">X</button></td>
+      `;
+      cronogramaBody.appendChild(tr);
+    });
+  });
+
+  homeView.style.display = 'none';
+  semesterView.style.display = 'block';
+  subjectView.style.display = 'none';
+}
+
+// Toggle current
+window.toggleCurrent = async function(id, checked) {
+  await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, id), { isCurrent: checked });
+  if (checked) {
+    const col = collection(db, `users/${currentUser.uid}/semesters`);
+    const snap = await getDocs(col);
+    snap.forEach(async d => {
+      if (d.id !== id) await updateDoc(d.ref, { isCurrent: false });
+    });
+  }
+  loadSemesters();
+  const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, id));
+  openSemester(id, snap.data().code, snap.data().startDate, snap.data().endDate, checked, snap.data().subjects || []);
+};
+
+// Delete subject
+window.deleteSubject = async function(index) {
+  if (!confirm("¿Eliminar esta materia?")) return;
+  const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
+  const snap = await getDoc(ref);
+  let subjects = snap.data().subjects || [];
+  subjects.splice(index, 1);
+  await updateDoc(ref, { subjects });
+  openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, subjects);
+  loadSemesters();
+};
+
+// Delete eval
+window.deleteEval = async function(subjectName, index) {
+  const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
+  const snap = await getDoc(ref);
+  let subjects = snap.data().subjects;
+  subjects = subjects.map(s => {
+    if (s.name === subjectName) {
+      s.evaluations.splice(index, 1);
+    }
+    return s;
+  });
+  await updateDoc(ref, { subjects });
+  openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, subjects);
+  loadSemesters();
+};
+
+// Add subject
+document.getElementById("addSubjectBtn").onclick = () => document.getElementById("addSubjectModal").style.display = 'flex';
+
+document.getElementById("saveSubjectBtn").onclick = async () => {
+  const name = document.getElementById("subjectNameInput").value.trim();
+  if (name) {
+    await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId), {
+      subjects: arrayUnion({ name, evaluations: [] })
+    });
+    await addNotification(`Nueva materia agregada: ${name}`);
+    document.getElementById("addSubjectModal").style.display = 'none';
+    const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId));
+    openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, snap.data().subjects || []);
+  }
+};
+
+// Add evaluation
+document.getElementById("addEvaluationBtn").onclick = () => {
+  if (!activeSubjectName) {
+    alert("Primero selecciona una materia");
+    return;
+  }
+  document.getElementById("addEvaluationModal").style.display = 'flex';
+};
+
+document.getElementById("saveEvalBtn").onclick = async () => {
+  const name = document.getElementById("evalNameInput").value.trim();
+  const date = document.getElementById("evalDateInput").value;
+  const week = document.getElementById("evalWeekInput").value;
+  const percent = document.getElementById("evalPercentInput").value;
+
+  if (!name || !date || !week || !percent) {
+    alert("Completa todos los campos");
+    return;
+  }
+
+  const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
+  const snap = await getDoc(ref);
+  let subjects = snap.data().subjects || [];
+
+  let found = false;
+  subjects = subjects.map(s => {
+    if (s.name === activeSubjectName) {
+      s.evaluations = s.evaluations || [];
+      s.evaluations.push({
+        name,
+        date,
+        week: Number(week),
+        percent: Number(percent),
+        grade: null
+      });
+      found = true;
+    }
+    return s;
+  });
+
+  if (!found) {
+    alert("Error: No se encontró la materia activa");
+    return;
+  }
+
+  await updateDoc(ref, { subjects });
+  document.getElementById("addEvaluationModal").style.display = 'none';
+
+  const updatedSnap = await getDoc(ref);
+  const updatedSubjects = updatedSnap.data().subjects || [];
+  openSubject(activeSubjectName, updatedSubjects.find(s => s.name === activeSubjectName).evaluations);
+  loadSemesters();
+};
+
+// Update grade
+window.updateGrade = async function(subjectName, index, value) {
+  const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
+  const snap = await getDoc(ref);
+  let subjects = snap.data().subjects;
+  subjects = subjects.map(s => {
+    if (s.name === subjectName) {
+      s.evaluations[index].grade = Number(value);
+    }
+    return s;
+  });
+  await updateDoc(ref, { subjects });
+  const updatedSnap = await getDoc(ref);
+  openSubject(subjectName, updatedSnap.data().subjects.find(s => s.name === subjectName).evaluations);
+  loadSemesters();
+};
+
+// Open subject
+function openSubject(name, evals) {
+  activeSubjectName = name;
+  subjectTitle.textContent = name;
+  evalsList.innerHTML = '';
+  let totalProgress = 0;
+  let donePercent = 0;
+  let remainingPercent = 0;
+  evals.forEach((ev, i) => {
+    const div = document.createElement('div');
+    div.className = 'eval-item';
+    div.innerHTML = `
+      <span><strong>${ev.name}</strong> • ${ev.date} (Sem ${ev.week})</span>
+      <span style="color:var(--primary);font-weight:600;">${ev.percent}%</span>
+      <input class="grade-input" type="number" min="0" max="5" step="0.1" value="${ev.grade || ''}" onchange="updateGrade('${name}', ${i}, this.value)">
+    `;
+    let startX = 0;
+    div.addEventListener('touchstart', e => startX = e.changedTouches[0].screenX);
+    div.addEventListener('touchend', e => {
+      if (startX - e.changedTouches[0].screenX > 100) {
+        if (confirm("Eliminar?")) deleteEval(name, i);
+      }
+    });
+    evalsList.appendChild(div);
+
+    remainingPercent += ev.percent;
+    if (ev.grade !== undefined) {
+      totalProgress += ev.grade * (ev.percent / 100);
+      donePercent += ev.percent;
+    }
+  });
+  remainingPercent -= donePercent;
+  progressFill.style.width = (donePercent) + '%';
+  progressPercent.textContent = totalProgress.toFixed(1);
+  if (remainingPercent > 0) {
+    const required = (3.0 - totalProgress) * (100 / remainingPercent);
+    requiredGrade.textContent = (required > 5 ? "imposible" : required.toFixed(1));
+  } else {
+    requiredGrade.textContent = totalProgress.toFixed(1) + (totalProgress >= 3.0 ? " (aprobado)" : " (reprobado)");
+  }
+  semesterView.style.display = 'none';
+  subjectView.style.display = 'block';
+}
+
+// Delete semester
+document.getElementById("deleteSemesterBtn").onclick = async () => {
+  if (confirm("¿Eliminar semestre?")) {
+    await deleteDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId));
+    backToHome();
+    loadSemesters();
+  }
+};
+
+// Navigation
+window.backToHome = () => {
+  homeView.style.display = 'block';
+  semesterView.style.display = 'none';
+  subjectView.style.display = 'none';
+};
+
+window.backToSemester = () => {
+  semesterView.style.display = 'block';
+  subjectView.style.display = 'none';
+};
+
+// Add notification
+async function addNotification(message) {
+  await addDoc(collection(db, `users/${currentUser.uid}/notifications`), {
+    message,
+    timestamp: Timestamp.now(),
+    read: false
+  });
+  loadNotifications();
+}
+
+// Load notifications
+async function loadNotifications() {
+  const col = collection(db, `users/${currentUser.uid}/notifications`);
+  const q = query(col, orderBy("timestamp", "desc"), limit(20));
+  const snap = await getDocs(q);
+  let unread = 0;
+  notificationsList.innerHTML = '';
+  snap.forEach(docSnap => {
+    const data = docSnap.data();
+    const div = document.createElement('div');
+    div.className = 'notification-item' + (data.read ? '' : ' unread');
+    div.innerHTML = `<p>${data.message} <small>${data.timestamp.toDate().toLocaleString()}</small></p>`;
+    notificationsList.appendChild(div);
+    if (!data.read) unread++;
+  });
+  unreadBadge.textContent = unread;
+  unreadBadge.style.display = unread > 0 ? 'block' : 'none';
+}
+
+// Mark as read when opening
+notificationsBtn.onclick = () => {
+  notificationsModal.style.display = 'flex';
+  const col = collection(db, `users/${currentUser.uid}/notifications`);
+  getDocs(col).then(snap => {
+    snap.forEach(d => updateDoc(d.ref, { read: true }));
+  });
+  loadNotifications();
+};
+
+// Check reminders (simplificado para no saturar)
+async function checkReminders() {
+  if (!activeSemesterId) return;
+  const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId));
+  const subjects = snap.data().subjects || [];
+  const now = new Date();
+  subjects.forEach(sub => {
+    (sub.evaluations || []).forEach(ev => {
+      const evDate = new Date(ev.date);
+      const daysToEv = Math.ceil((evDate - now) / 86400000);
+      if (daysToEv > 0 && daysToEv <= 7) {
+        addNotification(`¡Ojo! ${ev.name} de ${sub.name} está a ${daysToEv} día(s). ¡Prepárate! 💪`);
+      }
+    });
+  });
+}
+</script>
+</body>
+</html>
