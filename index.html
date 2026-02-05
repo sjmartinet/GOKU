@@ -433,8 +433,8 @@ input:checked + .slider:before { transform: translateX(22px); }
 }
 
 #semesterView table {
-  width: max-content;          /* Permite que la tabla sea tan ancha como necesite */
-  min-width: 100%;             /* Al menos ocupa todo el contenedor */
+  width: max-content;
+  min-width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   background: white;
@@ -848,13 +848,26 @@ function updateWeekInfo() {
   nextWeekEl.textContent = week + 1;
 }
 
-// Upcoming
+// Upcoming - ordenado por fecha ascendente y limitado a 7 más cercanos
 function showUpcomingEvents(subjects) {
   upcomingEventsList.innerHTML = "";
   let evals = [];
-  subjects.forEach(s => (s.evaluations || []).forEach(e => evals.push({...e, subject:s.name})));
-  evals.sort((a,b) => new Date(a.date) - new Date(b.date));
-  const upcoming = evals.filter(e => new Date(e.date) >= new Date()).slice(0,5);
+
+  subjects.forEach(s => {
+    (s.evaluations || []).forEach(e => {
+      evals.push({ ...e, subject: s.name });
+    });
+  });
+
+  // Ordenar por fecha ASCENDENTE (más pronto primero)
+  evals.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // Filtrar solo futuros y tomar los primeros 7
+  const now = new Date();
+  const upcoming = evals
+    .filter(e => new Date(e.date) >= now)
+    .slice(0, 7);
+
   upcoming.forEach(e => {
     const div = document.createElement('div');
     div.className = 'upcoming-item';
@@ -868,7 +881,10 @@ function showUpcomingEvents(subjects) {
     `;
     upcomingEventsList.appendChild(div);
   });
-  if (!upcoming.length) upcomingEventsList.innerHTML = '<p style="color:var(--muted);text-align:center;">No hay eventos próximos</p>';
+
+  if (!upcoming.length) {
+    upcomingEventsList.innerHTML = '<p style="color:var(--muted);text-align:center;">No hay eventos próximos</p>';
+  }
 }
 
 // Add semester
@@ -886,7 +902,7 @@ document.getElementById("saveSemesterBtn").onclick = async () => {
   }
 };
 
-// Open semester
+// Open semester - ahora ordena el cronograma por fecha ascendente
 function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterId = id;
   activeSemesterCode = code;
@@ -905,6 +921,8 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   subjectsGrid.innerHTML = '';
   cronogramaBody.innerHTML = '';
 
+  // Preparar todas las evaluaciones para ordenarlas
+  let allEvals = [];
   subjects.forEach((sub, subIndex) => {
     const card = document.createElement('div');
     card.className = 'subject-card';
@@ -918,18 +936,31 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
     subjectsGrid.appendChild(card);
 
     (sub.evaluations || []).forEach((ev, evIndex) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${ev.date}</td>
-        <td>${ev.week}</td>
-        <td>${sub.name}</td>
-        <td>${ev.name}</td>
-        <td>${ev.percent}%</td>
-        <td><input type="number" min="0" max="5" step="0.1" value="${ev.grade || ''}" onchange="updateGrade('${sub.name}', ${evIndex}, this.value)" style="width:50px;"></td>
-        <td><button onclick="deleteEval('${sub.name}', ${evIndex})" style="background:var(--danger);color:white;border:none;padding:4px 8px;border-radius:4px;">X</button></td>
-      `;
-      cronogramaBody.appendChild(tr);
+      allEvals.push({
+        ...ev,
+        subject: sub.name,
+        subIndex,
+        evIndex
+      });
     });
+  });
+
+  // Ordenar todas las evaluaciones por fecha ascendente
+  allEvals.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // Renderizar en el orden correcto
+  allEvals.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${item.date}</td>
+      <td>${item.week}</td>
+      <td>${item.subject}</td>
+      <td>${item.name}</td>
+      <td>${item.percent}%</td>
+      <td><input type="number" min="0" max="5" step="0.1" value="${item.grade || ''}" onchange="updateGrade('${item.subject}', ${item.evIndex}, this.value)" style="width:50px;"></td>
+      <td><button onclick="deleteEval('${item.subject}', ${item.evIndex})" style="background:var(--danger);color:white;border:none;padding:4px 8px;border-radius:4px;">X</button></td>
+    `;
+    cronogramaBody.appendChild(tr);
   });
 
   homeView.style.display = 'none';
