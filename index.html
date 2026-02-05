@@ -158,18 +158,16 @@ body {
 /* Materias */
 .subjects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 130px)); 
+  grid-template-columns: repeat(auto-fill, minmax(100px, 130px));
   gap: 10px;
   margin: 16px 0;
   justify-content: center;
 }
-
 .subject-card {
   background: var(--card);
-  border-radius: 12px; /* Un poco más redondeado para el look pastel */
+  border-radius: 12px;
   padding: 8px;
-  /* Sombra más suave y azulada para combinar */
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.08); 
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.08);
   cursor: pointer;
   text-align: center;
   aspect-ratio: 1 / 1;
@@ -180,31 +178,27 @@ body {
   position: relative;
   transition: all 0.25s ease;
   overflow: hidden;
-  /* Un borde sutil ayuda a que no se vea "lavado" */
   border: 1px solid rgba(25, 118, 210, 0.1);
 }
-
 .subject-card:hover {
   transform: translateY(-4px);
-  background: #bbdefb; /* Un celeste un poco más oscuro al pasar el mouse */
+  background: #bbdefb;
   box-shadow: 0 8px 20px rgba(25, 118, 210, 0.15);
 }
-
 .subject-card h4 {
   margin: 0;
   color: var(--primary);
-  font-weight: 700; 
-  text-transform: uppercase; /* Opcional: le da un look de etiqueta limpia */
+  font-weight: 700;
+  text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.5px;
   line-height: 1.2;
 }
-
 .subject-card .delete-subject {
   position: absolute;
   top: 5px;
   right: 5px;
-  background: white; /* Fondo blanco para que resalte en el azul */
+  background: white;
   color: var(--danger);
   border: none;
   width: 22px;
@@ -217,7 +211,6 @@ body {
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 .subject-card:hover .delete-subject {
   display: flex;
   opacity: 1;
@@ -429,6 +422,93 @@ input:checked + .slider:before { transform: translateX(22px); }
   background: #e3f2fd;
   font-weight: 500;
 }
+
+/* CRONOGRAMA RESPONSIVE */
+#semesterView .table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+  padding-bottom: 8px;
+}
+
+#semesterView table {
+  width: max-content;          /* Permite que la tabla sea tan ancha como necesite */
+  min-width: 100%;             /* Al menos ocupa todo el contenedor */
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+#semesterView thead th {
+  background: var(--primary);
+  color: white;
+  padding: 10px 12px;
+  font-size: 0.9em;
+  text-align: center;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#semesterView tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  font-size: 0.85em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 90px;
+  max-width: 160px;
+}
+
+#semesterView tbody td input {
+  width: 60px;
+  padding: 4px;
+  text-align: center;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+  #semesterView .table-wrapper {
+    margin: 0 -20px;
+    padding: 0 20px;
+  }
+  #semesterView thead th {
+    padding: 8px 10px;
+    font-size: 0.8em;
+  }
+  #semesterView tbody td {
+    padding: 8px 10px;
+    font-size: 0.78em;
+    min-width: 80px;
+    max-width: 130px;
+  }
+  #semesterView tbody td input {
+    width: 55px;
+  }
+}
+
+@media (max-width: 480px) {
+  #semesterView thead th {
+    padding: 6px 8px;
+    font-size: 0.75em;
+  }
+  #semesterView tbody td {
+    padding: 6px 8px;
+    font-size: 0.72em;
+    min-width: 70px;
+    max-width: 110px;
+  }
+  #semesterView tbody td input {
+    width: 50px;
+  }
+}
 </style>
 </head>
 <body>
@@ -485,14 +565,25 @@ input:checked + .slider:before { transform: translateX(22px); }
     <button class="add-btn" id="addSubjectBtn">+ Agregar materia</button>
     <div class="subjects-grid" id="subjectsGrid"></div>
     <h3 style="margin-top:32px;">Cronograma completo</h3>
-    <table style="width:100%; border-collapse:separate; border-spacing:0; margin-top:12px;">
-      <thead>
-        <tr>
-          <th>Fecha</th><th>Semana</th><th>Materia</th><th>Actividad</th><th>%</th><th>Nota</th><th>Acción</th>
-        </tr>
-      </thead>
-      <tbody id="cronogramaBody"></tbody>
-    </table>
+    
+    <!-- Contenedor con scroll horizontal -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Semana</th>
+            <th>Materia</th>
+            <th>Actividad</th>
+            <th>%</th>
+            <th>Nota</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="cronogramaBody"></tbody>
+      </table>
+    </div>
+
     <button class="delete-action" id="deleteSemesterBtn"><i class="fa-solid fa-trash"></i> Eliminar semestre</button>
   </div>
 
@@ -663,7 +754,6 @@ async function checkFirstLogin() {
   if (!userSnap.exists() || !userSnap.data().welcomeShown) {
     welcomeModal.style.display = 'flex';
     await setDoc(userDocRef, { welcomeShown: true }, { merge: true });
-    // Notificación de bienvenida también
     await addNotification("¡Bienvenido a GOKU! Gracias por estar aquí. Organiza tu semestre, lleva control de tus notas y alcanza tus metas con fuerza y buena vibra. ¡Vamos con todo! 💙🔥");
   }
 }
@@ -700,7 +790,7 @@ document.querySelectorAll(".modal").forEach(modal => {
   modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
 });
 
-// Cargar semestres (sin cambios)
+// Cargar semestres
 async function loadSemesters() {
   semestersGrid.innerHTML = '';
   const col = collection(db, `users/${currentUser.uid}/semesters`);
@@ -1081,7 +1171,7 @@ notificationsBtn.onclick = () => {
   loadNotifications();
 };
 
-// Check reminders (simplificado para no saturar)
+// Check reminders
 async function checkReminders() {
   if (!activeSemesterId) return;
   const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId));
