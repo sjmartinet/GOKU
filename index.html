@@ -118,6 +118,7 @@ body {
   font-weight: 900;
   letter-spacing: 3px;
   color: var(--primary);
+  cursor: pointer;
 }
 .topbar-right { display: flex; align-items: center; gap: 20px; }
 .icon-btn {
@@ -449,10 +450,21 @@ input:checked + .slider:before { transform: translateX(22px); }
   padding: 12px;
   border-bottom: 1px solid #e5e7eb;
   font-size: 0.95em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .notification-item.unread {
   background: #e3f2fd;
   font-weight: 500;
+}
+.notification-delete {
+  color: var(--danger);
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.notification-delete:hover {
+  color: #b91c1c;
 }
 /* CRONOGRAMA RESPONSIVE */
 #semesterView .table-wrapper {
@@ -551,10 +563,10 @@ input:checked + .slider:before { transform: translateX(22px); }
   </div>
 </div>
 
-<!-- DASHBOARD (exactamente igual) -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="topbar">
-    <div class="brand">GOKU</div>
+    <div class="brand" onclick="backToHomeIfNeeded()">GOKU</div>
     <div class="topbar-right">
       <div class="icon-btn" id="notificationsBtn"><i class="fa-solid fa-bell"></i><span id="unreadBadge" class="badge" style="display:none;"></span></div>
       <div class="avatar" id="avatar">U</div>
@@ -586,6 +598,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     <div class="subjects-grid" id="subjectsGrid"></div>
     <h3 style="margin-top:32px;">Cronograma completo</h3>
    
+    <!-- Contenedor con scroll horizontal -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -615,8 +628,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     <div class="evals-list" id="evalsList"></div>
   </div>
 </div>
-
-<!-- Modales (sin cambios) -->
+<!-- Modales -->
 <div id="editProfileModal" class="modal">
   <div class="modal-card">
     <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
@@ -673,7 +685,6 @@ input:checked + .slider:before { transform: translateX(22px); }
     <button class="primary-btn" onclick="document.getElementById('welcomeModal').style.display='none'">¡Empecemos con toda la energía!</button>
   </div>
 </div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -849,7 +860,9 @@ function showUpcomingEvents(subjects) {
       evals.push({ ...e, subject: s.name });
     });
   });
+  // Ordenar por fecha ASCENDENTE (más pronto primero)
   evals.sort((a, b) => new Date(a.date) - new Date(b.date));
+  // Filtrar solo futuros y tomar los primeros 7
   const now = new Date();
   const upcoming = evals
     .filter(e => new Date(e.date) >= now)
@@ -885,7 +898,7 @@ document.getElementById("saveSemesterBtn").onclick = async () => {
     loadSemesters();
   }
 };
-// Open semester
+// Open semester - ahora ordena el cronograma por fecha ascendente
 function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterId = id;
   activeSemesterCode = code;
@@ -901,6 +914,7 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   `;
   subjectsGrid.innerHTML = '';
   cronogramaBody.innerHTML = '';
+  // Preparar todas las evaluaciones para ordenarlas
   let allEvals = [];
   subjects.forEach((sub, subIndex) => {
     const card = document.createElement('div');
@@ -922,7 +936,9 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
       });
     });
   });
+  // Ordenar todas las evaluaciones por fecha ascendente
   allEvals.sort((a, b) => new Date(a.date) - new Date(b.date));
+  // Renderizar en el orden correcto
   allEvals.forEach(item => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -1112,6 +1128,11 @@ window.backToHome = () => {
   semesterView.style.display = 'none';
   subjectView.style.display = 'none';
 };
+window.backToHomeIfNeeded = () => {
+  if (semesterView.style.display !== 'none' || subjectView.style.display !== 'none') {
+    backToHome();
+  }
+};
 window.backToSemester = () => {
   semesterView.style.display = 'block';
   subjectView.style.display = 'none';
@@ -1136,13 +1157,23 @@ async function loadNotifications() {
     const data = docSnap.data();
     const div = document.createElement('div');
     div.className = 'notification-item' + (data.read ? '' : ' unread');
-    div.innerHTML = `<p>${data.message} <small>${data.timestamp.toDate().toLocaleString()}</small></p>`;
+    div.innerHTML = `
+      <p>${data.message} <small>${data.timestamp.toDate().toLocaleString()}</small></p>
+      <i class="fa-solid fa-times notification-delete" onclick="deleteNotification('${docSnap.id}')"></i>
+    `;
     notificationsList.appendChild(div);
     if (!data.read) unread++;
   });
   unreadBadge.textContent = unread;
   unreadBadge.style.display = unread > 0 ? 'block' : 'none';
 }
+// Delete notification
+window.deleteNotification = async function(id) {
+  if (confirm("¿Eliminar esta notificación?")) {
+    await deleteDoc(doc(db, `users/${currentUser.uid}/notifications`, id));
+    loadNotifications();
+  }
+};
 // Mark as read when opening
 notificationsBtn.onclick = () => {
   notificationsModal.style.display = 'flex';
