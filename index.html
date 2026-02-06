@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="https://www.creativefabrica.com/wp-content/uploads/2020/08/25/Letter-G-Monogram-Simple-Vector-Icon-Graphics-5109464-1.jpg" href="./favicon.png">
 <title>GOKU · Asistente Académico Virtual</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <style>
@@ -25,7 +26,7 @@ body {
   color: var(--text);
 }
 
-/* LOGIN - versión moderna, limpia y segura */
+
 #loginScreen {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
@@ -103,7 +104,7 @@ body {
   font-size: 1.6rem;
 }
 
-/* ── El resto del CSS se mantiene exactamente igual al original ── */
+
 #dashboard { display: none; }
 .topbar {
   background: white;
@@ -160,7 +161,7 @@ body {
   margin: 40px auto;
   padding: 0 20px;
 }
-/* Semestres */
+
 .semesters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -197,7 +198,7 @@ body {
   color: var(--muted);
   font-size: 1.5em;
 }
-/* Materias */
+
 .subjects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 130px));
@@ -257,7 +258,7 @@ body {
   display: flex;
   opacity: 1;
 }
-/* Evaluaciones */
+
 .evals-list .eval-item {
   background: #f8fafc;
   padding: 10px 14px;
@@ -275,7 +276,7 @@ body {
   border: 1px solid var(--muted);
   border-radius: 4px;
 }
-/* Progress */
+
 .progress-bar {
   background: #e5e7eb;
   border-radius: 8px;
@@ -289,7 +290,7 @@ body {
   border-radius: 8px;
   transition: width 0.3s;
 }
-/* Próximos eventos */
+
 .upcoming-panel {
   background: var(--card);
   border-radius: 16px;
@@ -305,7 +306,7 @@ body {
   gap: 12px;
 }
 .upcoming-item:last-child { border-bottom: none; }
-/* Botones */
+
 .add-btn {
   background: var(--primary);
   color: white;
@@ -327,7 +328,7 @@ body {
   margin-right: 10px;
 }
 .back-btn:hover { background: rgba(0,51,160,0.05); }
-/* Toggle */
+
 .switch {
   position: relative;
   display: inline-block;
@@ -357,7 +358,7 @@ body {
 }
 input:checked + .slider { background: var(--success); }
 input:checked + .slider:before { transform: translateX(22px); }
-/* Delete action */
+
 .delete-action {
   background: var(--danger);
   color: white;
@@ -376,7 +377,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(239,68,68,0.3);
 }
-/* Modal */
+
 .modal {
   position: fixed;
   inset: 0;
@@ -422,7 +423,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   cursor: pointer;
 }
 .primary-btn:hover { background: var(--accent); }
-/* Dropdown */
+
 #settingsDropdown {
   position: absolute;
   top: 60px;
@@ -445,7 +446,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   cursor: pointer;
 }
 #settingsDropdown button:hover { background: #f3f4f6; }
-/* Notificaciones */
+
 .notification-item {
   padding: 12px;
   border-bottom: 1px solid #e5e7eb;
@@ -466,7 +467,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 .notification-delete:hover {
   color: #b91c1c;
 }
-/* CRONOGRAMA RESPONSIVE */
+
 #semesterView .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -511,7 +512,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   padding: 4px;
   text-align: center;
 }
-/* Ajustes para móviles */
+
 @media (max-width: 768px) {
   #semesterView .table-wrapper {
     margin: 0 -20px;
@@ -550,7 +551,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 </head>
 <body>
 
-<!-- LOGIN MEJORADO -->
+
 <div id="loginScreen">
   <div class="login-card">
     <h1>GOKU</h1>
@@ -563,7 +564,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   </div>
 </div>
 
-<!-- DASHBOARD -->
+
 <div id="dashboard">
   <div class="topbar">
     <div class="brand" onclick="backToHomeIfNeeded()">GOKU</div>
@@ -598,7 +599,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     <div class="subjects-grid" id="subjectsGrid"></div>
     <h3 style="margin-top:32px;">Cronograma completo</h3>
    
-    <!-- Contenedor con scroll horizontal -->
+   
     <div class="table-wrapper">
       <table>
         <thead>
@@ -628,7 +629,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     <div class="evals-list" id="evalsList"></div>
   </div>
 </div>
-<!-- Modales -->
+
 <div id="editProfileModal" class="modal">
   <div class="modal-card">
     <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
@@ -701,7 +702,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-// DOM
+
 const loginScreen = document.getElementById("loginScreen");
 const dashboard = document.getElementById("dashboard");
 const userNameEl = document.getElementById("userName");
@@ -737,7 +738,7 @@ let activeSemesterStart = null;
 let activeSemesterEnd = null;
 let activeSubjectName = null;
 
-// Reloj
+
 function updateLiveClock() {
   const now = new Date();
   currentDateTimeEl.textContent = now.toLocaleString('es-CO', {
@@ -749,7 +750,7 @@ function updateLiveClock() {
 setInterval(updateLiveClock, 1000);
 updateLiveClock();
 
-// Auth
+
 document.getElementById("googleLogin").onclick = () => signInWithPopup(auth, provider);
 
 onAuthStateChanged(auth, user => {
@@ -770,7 +771,6 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-// Verificar si es el primer login → mostrar bienvenida
 async function checkFirstLogin() {
   const userDocRef = doc(db, `users/${currentUser.uid}`);
   const userSnap = await getDoc(userDocRef);
@@ -781,7 +781,7 @@ async function checkFirstLogin() {
   }
 }
 
-// Settings
+
 document.getElementById("settingsBtn").onclick = () => {
   const dd = document.getElementById("settingsDropdown");
   dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
@@ -805,12 +805,12 @@ document.getElementById("saveProfileBtn").onclick = () => {
   }
 };
 
-// Cerrar modales
+
 document.querySelectorAll(".modal").forEach(modal => {
   modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
 });
 
-// Cargar semestres
+
 async function loadSemesters() {
   semestersGrid.innerHTML = '';
   const col = collection(db, `users/${currentUser.uid}/semesters`);
@@ -849,7 +849,7 @@ async function loadSemesters() {
   }
 }
 
-// Update week
+
 function updateWeekInfo() {
   const now = new Date();
   if (now > activeSemesterEnd) {
@@ -864,7 +864,7 @@ function updateWeekInfo() {
   nextWeekEl.textContent = week + 1;
 }
 
-// Upcoming events
+
 function showUpcomingEvents(subjects) {
   upcomingEventsList.innerHTML = "";
   let evals = [];
@@ -894,7 +894,7 @@ function showUpcomingEvents(subjects) {
   }
 }
 
-// Add semester
+
 document.getElementById("saveSemesterBtn").onclick = async () => {
   const code = document.getElementById("semesterCode").value.trim();
   const start = document.getElementById("semesterStartDate").value;
@@ -909,7 +909,7 @@ document.getElementById("saveSemesterBtn").onclick = async () => {
   }
 };
 
-// Open semester
+
 function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterId = id;
   activeSemesterCode = code;
@@ -965,7 +965,7 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   subjectView.style.display = 'none';
 }
 
-// Toggle current
+
 window.toggleCurrent = async function(id, checked) {
   await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, id), { isCurrent: checked });
   if (checked) {
@@ -980,7 +980,7 @@ window.toggleCurrent = async function(id, checked) {
   openSemester(id, snap.data().code, snap.data().startDate, snap.data().endDate, checked, snap.data().subjects || []);
 };
 
-// Delete subject
+
 window.deleteSubject = async function(index) {
   if (!confirm("¿Eliminar esta materia?")) return;
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
@@ -992,7 +992,7 @@ window.deleteSubject = async function(index) {
   loadSemesters();
 };
 
-// Delete eval
+
 window.deleteEval = async function(subjectName, index) {
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
   const snap = await getDoc(ref);
@@ -1008,7 +1008,7 @@ window.deleteEval = async function(subjectName, index) {
   loadSemesters();
 };
 
-// Add subject
+
 document.getElementById("addSubjectBtn").onclick = () => document.getElementById("addSubjectModal").style.display = 'flex';
 document.getElementById("saveSubjectBtn").onclick = async () => {
   const name = document.getElementById("subjectNameInput").value.trim();
@@ -1023,7 +1023,7 @@ document.getElementById("saveSubjectBtn").onclick = async () => {
   }
 };
 
-// Add evaluation
+
 document.getElementById("addEvaluationBtn").onclick = () => {
   if (!activeSubjectName) {
     alert("Primero selecciona una materia");
@@ -1070,7 +1070,7 @@ document.getElementById("saveEvalBtn").onclick = async () => {
   loadSemesters();
 };
 
-// Update grade
+
 window.updateGrade = async function(subjectName, index, value) {
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
   const snap = await getDoc(ref);
@@ -1087,7 +1087,7 @@ window.updateGrade = async function(subjectName, index, value) {
   loadSemesters();
 };
 
-// Open subject
+
 function openSubject(name, evals) {
   activeSubjectName = name;
   subjectTitle.textContent = name;
@@ -1130,7 +1130,7 @@ function openSubject(name, evals) {
   subjectView.style.display = 'block';
 }
 
-// Delete semester
+
 document.getElementById("deleteSemesterBtn").onclick = async () => {
   if (confirm("¿Eliminar semestre?")) {
     await deleteDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId));
@@ -1139,7 +1139,7 @@ document.getElementById("deleteSemesterBtn").onclick = async () => {
   }
 };
 
-// Navigation
+
 window.backToHome = () => {
   homeView.style.display = 'block';
   semesterView.style.display = 'none';
@@ -1155,7 +1155,7 @@ window.backToSemester = () => {
   subjectView.style.display = 'none';
 };
 
-// Add notification
+
 async function addNotification(message) {
   await addDoc(collection(db, `users/${currentUser.uid}/notifications`), {
     message,
@@ -1165,7 +1165,7 @@ async function addNotification(message) {
   loadNotifications();
 }
 
-// Load notifications
+
 async function loadNotifications() {
   const col = collection(db, `users/${currentUser.uid}/notifications`);
   const q = query(col, orderBy("timestamp", "desc"), limit(20));
@@ -1187,7 +1187,7 @@ async function loadNotifications() {
   unreadBadge.style.display = unread > 0 ? 'block' : 'none';
 }
 
-// Delete notification
+
 window.deleteNotification = async function(id) {
   if (confirm("¿Eliminar esta notificación?")) {
     await deleteDoc(doc(db, `users/${currentUser.uid}/notifications`, id));
@@ -1195,7 +1195,7 @@ window.deleteNotification = async function(id) {
   }
 };
 
-// Mark as read when opening
+
 notificationsBtn.onclick = () => {
   notificationsModal.style.display = 'flex';
   const col = collection(db, `users/${currentUser.uid}/notifications`);
@@ -1205,14 +1205,14 @@ notificationsBtn.onclick = () => {
   loadNotifications();
 };
 
-// Check reminders - ¡ACTUALIZADO! Solo una vez al día por evaluación
+
 async function checkReminders() {
   if (!activeSemesterId) return;
   const semesterRef = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
   const snap = await getDoc(semesterRef);
   const subjects = snap.data().subjects || [];
   const now = new Date();
-  const today = now.toISOString().split('T')[0]; // YYYY-MM-DD
+  const today = now.toISOString().split('T')[0]; 
 
   let needsUpdate = false;
 
@@ -1224,33 +1224,34 @@ async function checkReminders() {
       const daysToEv = Math.ceil((evDate - now) / 86400000);
 
       if (daysToEv >= 1 && daysToEv <= 7) {
-        // Verificar si ya se envió hoy
+      
         const lastSent = ev.lastReminderSent;
         if (lastSent === today) {
-          return; // ya enviado hoy → no hacer nada
+          return; 
         }
 
-        // Enviar notificación
+        
         const message = `¡Ojo! ${ev.name} de ${sub.name} está a ${daysToEv} día${daysToEv === 1 ? '' : 's'}. ¡Prepárate! 💪`;
         addNotification(message);
 
-        // Marcar como enviado hoy
+        
         ev.lastReminderSent = today;
         needsUpdate = true;
       }
     });
   });
 
-  // Si hubo cambios (se enviaron recordatorios nuevos), guardar en Firestore
+  
   if (needsUpdate) {
     await updateDoc(semesterRef, { subjects });
-    // Opcional: refrescar la bandeja inmediatamente
+   
     loadNotifications();
   }
 }
 </script>
 </body>
 </html>
+
 
 
 
