@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="animation.svg
-    " width="800">
+  <img src="goku-scan.svg" width="900">
 </p>
+
 
