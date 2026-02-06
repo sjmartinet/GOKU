@@ -24,43 +24,81 @@ body {
   color: var(--text);
 }
 
-/* LOGIN */
+/* ── LOGIN (versión modificada: sin imágenes, sensación de seguridad) ── */
 #loginScreen {
   min-height: 100vh;
-  background: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.65)),
-              url("https://blog.erikstore.com/wp-content/uploads/2023/05/Tranformaciones-son-goku-dragon-ball.jpg");
-  background-size: cover;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
+
 .login-card {
   background: white;
-  border-radius: 26px;
-  padding: 50px 36px;
+  border-radius: 16px;
+  padding: 48px 40px;
   max-width: 420px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 30px 60px rgba(0,0,0,.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
 }
-.login-card img.logo { max-height: 220px; margin-bottom: 20px; }
+
+.login-card h2 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+}
+
+.login-card p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin: 0 0 32px;
+}
+
+.security-info {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 24px 0 40px;
+  line-height: 1.5;
+  background: #f1f5f9;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
 .google-btn {
   width: 100%;
-  padding: 14px;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
   background: white;
-  font-size: 16px;
+  font-size: 1.05rem;
   font-weight: 600;
+  color: #111827;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
+  transition: all 0.2s;
 }
-.google-btn img { width: 26px; height: 26px; }
 
-/* DASHBOARD */
+.google-btn:hover {
+  background: #f8fafc;
+  border-color: #9ca3af;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.google-btn i {
+  color: #4285F4;
+  font-size: 1.4rem;
+}
+
+/* ── Todo lo demás se mantiene exactamente igual ── */
 #dashboard { display: none; }
 .topbar {
   background: white;
@@ -116,7 +154,6 @@ body {
   margin: 40px auto;
   padding: 0 20px;
 }
-
 /* Semestres */
 .semesters-grid {
   display: grid;
@@ -154,7 +191,6 @@ body {
   color: var(--muted);
   font-size: 1.5em;
 }
-
 /* Materias */
 .subjects-grid {
   display: grid;
@@ -215,7 +251,6 @@ body {
   display: flex;
   opacity: 1;
 }
-
 /* Evaluaciones */
 .evals-list .eval-item {
   background: #f8fafc;
@@ -234,7 +269,6 @@ body {
   border: 1px solid var(--muted);
   border-radius: 4px;
 }
-
 /* Progress */
 .progress-bar {
   background: #e5e7eb;
@@ -249,7 +283,6 @@ body {
   border-radius: 8px;
   transition: width 0.3s;
 }
-
 /* Próximos eventos */
 .upcoming-panel {
   background: var(--card);
@@ -266,7 +299,6 @@ body {
   gap: 12px;
 }
 .upcoming-item:last-child { border-bottom: none; }
-
 /* Botones */
 .add-btn {
   background: var(--primary);
@@ -289,7 +321,6 @@ body {
   margin-right: 10px;
 }
 .back-btn:hover { background: rgba(0,51,160,0.05); }
-
 /* Toggle */
 .switch {
   position: relative;
@@ -320,7 +351,6 @@ body {
 }
 input:checked + .slider { background: var(--success); }
 input:checked + .slider:before { transform: translateX(22px); }
-
 /* Delete action */
 .delete-action {
   background: var(--danger);
@@ -340,7 +370,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(239,68,68,0.3);
 }
-
 /* Modal */
 .modal {
   position: fixed;
@@ -387,7 +416,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   cursor: pointer;
 }
 .primary-btn:hover { background: var(--accent); }
-
 /* Dropdown */
 #settingsDropdown {
   position: absolute;
@@ -411,7 +439,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   cursor: pointer;
 }
 #settingsDropdown button:hover { background: #f3f4f6; }
-
 /* Notificaciones */
 .notification-item {
   padding: 12px;
@@ -422,7 +449,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   background: #e3f2fd;
   font-weight: 500;
 }
-
 /* CRONOGRAMA RESPONSIVE */
 #semesterView .table-wrapper {
   width: 100%;
@@ -431,7 +457,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   margin: 16px 0;
   padding-bottom: 8px;
 }
-
 #semesterView table {
   width: max-content;
   min-width: 100%;
@@ -442,7 +467,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-
 #semesterView thead th {
   background: var(--primary);
   color: white;
@@ -454,7 +478,6 @@ input:checked + .slider:before { transform: translateX(22px); }
   top: 0;
   z-index: 10;
 }
-
 #semesterView tbody td {
   padding: 10px 12px;
   border-bottom: 1px solid #e5e7eb;
@@ -466,13 +489,11 @@ input:checked + .slider:before { transform: translateX(22px); }
   min-width: 90px;
   max-width: 160px;
 }
-
 #semesterView tbody td input {
   width: 60px;
   padding: 4px;
   text-align: center;
 }
-
 /* Ajustes para móviles */
 @media (max-width: 768px) {
   #semesterView .table-wrapper {
@@ -493,7 +514,6 @@ input:checked + .slider:before { transform: translateX(22px); }
     width: 55px;
   }
 }
-
 @media (max-width: 480px) {
   #semesterView thead th {
     padding: 6px 8px;
@@ -513,20 +533,26 @@ input:checked + .slider:before { transform: translateX(22px); }
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN (solo esta sección fue modificada) -->
 <div id="loginScreen">
   <div class="login-card">
-    <img class="logo" src="https://www.superherotoystore.com/cdn/shop/articles/e33c2fa94c03efa06678116f80d62d0d_1c4bccf2-0e38-4f4c-8dcd-f51830857d15_600x.jpg">
     <h2>GOKU</h2>
     <p>Asistente Académico Virtual</p>
+    
+    <div class="security-info">
+      Conexión segura mediante Google<br>
+      • No guardamos tu contraseña<br>
+      • Solo usamos tu nombre y correo
+    </div>
+
     <button class="google-btn" id="googleLogin">
-      <img src="https://images.icon-icons.com/2429/PNG/512/google_logo_icon_147282.png">
+      <i class="fa-brands fa-google"></i>
       Continuar con Google
     </button>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- DASHBOARD (sin ningún cambio) -->
 <div id="dashboard">
   <div class="topbar">
     <div class="brand">GOKU</div>
@@ -536,36 +562,31 @@ input:checked + .slider:before { transform: translateX(22px); }
       <div class="icon-btn" id="settingsBtn"><i class="fa-solid fa-gear"></i></div>
     </div>
   </div>
-
   <div id="settingsDropdown">
     <button id="editProfileBtn">Editar perfil</button>
     <button id="logoutBtn">Cerrar sesión</button>
   </div>
-
   <div class="banner">
     <h1>Bienvenido, <span id="userName"></span></h1>
     <p id="currentSemesterText">Semestre actual: —</p>
     <p id="currentDateTime"></p>
     <p id="weekInfo">Semana actual: <strong><span id="currentWeek"></span></strong> | Próxima: <strong><span id="nextWeek"></span></strong></p>
   </div>
-
   <div class="container" id="homeView">
     <div class="upcoming-panel">
       <h2>Próximos eventos más cercanos</h2>
       <div id="upcomingEventsList"></div>
     </div>
-
     <h2>Mis semestres</h2>
     <div class="semesters-grid" id="semestersGrid"></div>
   </div>
-
   <div class="container" id="semesterView" style="display:none;">
     <button class="back-btn" onclick="backToHome()">Volver al inicio</button>
     <h2 id="semesterTitle" style="font-weight:900; letter-spacing:1px; color:var(--primary);"></h2>
     <button class="add-btn" id="addSubjectBtn">+ Agregar materia</button>
     <div class="subjects-grid" id="subjectsGrid"></div>
     <h3 style="margin-top:32px;">Cronograma completo</h3>
-    
+   
     <!-- Contenedor con scroll horizontal -->
     <div class="table-wrapper">
       <table>
@@ -583,10 +604,8 @@ input:checked + .slider:before { transform: translateX(22px); }
         <tbody id="cronogramaBody"></tbody>
       </table>
     </div>
-
     <button class="delete-action" id="deleteSemesterBtn"><i class="fa-solid fa-trash"></i> Eliminar semestre</button>
   </div>
-
   <div class="container" id="subjectView" style="display:none;">
     <button class="back-btn" onclick="backToSemester()">Volver al semestre</button>
     <h2 id="subjectTitle" style="font-weight:900; letter-spacing:1px; color:var(--primary);"></h2>
@@ -599,19 +618,18 @@ input:checked + .slider:before { transform: translateX(22px); }
   </div>
 </div>
 
-<!-- Modales -->
+<!-- Modales (sin cambios) -->
 <div id="editProfileModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
     <h3>Editar perfil</h3>
     <input id="newDisplayName" placeholder="Nombre visible">
     <button class="primary-btn" id="saveProfileBtn">Guardar cambios</button>
   </div>
 </div>
-
 <div id="addSemesterModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
     <h3>Nuevo semestre</h3>
     <input id="semesterCode" placeholder="Ej: 2026-1">
     <input id="semesterStartDate" type="date">
@@ -619,19 +637,17 @@ input:checked + .slider:before { transform: translateX(22px); }
     <button class="primary-btn" id="saveSemesterBtn">Crear</button>
   </div>
 </div>
-
 <div id="addSubjectModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
     <h3>Nueva materia</h3>
     <input id="subjectNameInput" placeholder="Ej: Álgebra Lineal">
     <button class="primary-btn" id="saveSubjectBtn">Agregar</button>
   </div>
 </div>
-
 <div id="addEvaluationModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
     <h3>Nueva evaluación</h3>
     <input id="evalNameInput" placeholder="Nombre (Quiz 1, Parcial, etc)">
     <input id="evalDateInput" type="date">
@@ -640,18 +656,16 @@ input:checked + .slider:before { transform: translateX(22px); }
     <button class="primary-btn" id="saveEvalBtn">Guardar evaluación</button>
   </div>
 </div>
-
 <div id="notificationsModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
     <h3>Notificaciones</h3>
     <div id="notificationsList" style="max-height:400px; overflow-y:auto;"></div>
   </div>
 </div>
-
 <div id="welcomeModal" class="modal">
   <div class="modal-card" style="text-align:center;">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
     <h2>¡Bienvenido a GOKU, Samuel! 🌟</h2>
     <p>¡Qué alegría inmensa tenerte aquí con nosotros!</p>
     <p>GOKU está diseñado con mucho cariño para acompañarte en este semestre y en todos los que vengan. Queremos verte organizado, motivado y alcanzando cada meta que te propongas. 💙</p>
@@ -666,18 +680,15 @@ input:checked + .slider:before { transform: translateX(22px); }
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc, Timestamp, query, orderBy, limit, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyC-VMxhcl1Jq-Z7mYAjR4CmC2KoW-zUT0I",
   authDomain: "agenda-academica-aed7f.firebaseapp.com",
   projectId: "agenda-academica-aed7f"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
-
 // DOM
 const loginScreen = document.getElementById("loginScreen");
 const dashboard = document.getElementById("dashboard");
@@ -706,14 +717,12 @@ const unreadBadge = document.getElementById("unreadBadge");
 const notificationsModal = document.getElementById("notificationsModal");
 const notificationsList = document.getElementById("notificationsList");
 const welcomeModal = document.getElementById("welcomeModal");
-
 let currentUser = null;
 let activeSemesterId = null;
 let activeSemesterCode = null;
 let activeSemesterStart = null;
 let activeSemesterEnd = null;
 let activeSubjectName = null;
-
 // Reloj
 function updateLiveClock() {
   const now = new Date();
@@ -725,10 +734,8 @@ function updateLiveClock() {
 }
 setInterval(updateLiveClock, 1000);
 updateLiveClock();
-
 // Auth
 document.getElementById("googleLogin").onclick = () => signInWithPopup(auth, provider);
-
 onAuthStateChanged(auth, user => {
   if (user) {
     currentUser = user;
@@ -746,7 +753,6 @@ onAuthStateChanged(auth, user => {
     loginScreen.style.display = 'flex';
   }
 });
-
 // Verificar si es el primer login → mostrar bienvenida
 async function checkFirstLogin() {
   const userDocRef = doc(db, `users/${currentUser.uid}`);
@@ -757,23 +763,19 @@ async function checkFirstLogin() {
     await addNotification("¡Bienvenido a GOKU! Gracias por estar aquí. Organiza tu semestre, lleva control de tus notas y alcanza tus metas con fuerza y buena vibra. ¡Vamos con todo! 💙🔥");
   }
 }
-
 // Settings
 document.getElementById("settingsBtn").onclick = () => {
   const dd = document.getElementById("settingsDropdown");
   dd.style.display = dd.style.display === 'block' ? 'none' : 'block';
 };
-
 document.getElementById("editProfileBtn").onclick = () => {
   document.getElementById("settingsDropdown").style.display = 'none';
   document.getElementById("editProfileModal").style.display = 'flex';
 };
-
 document.getElementById("logoutBtn").onclick = () => {
   document.getElementById("settingsDropdown").style.display = 'none';
   signOut(auth);
 };
-
 document.getElementById("saveProfileBtn").onclick = () => {
   const name = document.getElementById("newDisplayName").value.trim();
   if (name) {
@@ -784,19 +786,16 @@ document.getElementById("saveProfileBtn").onclick = () => {
     });
   }
 };
-
 // Cerrar modales
 document.querySelectorAll(".modal").forEach(modal => {
   modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
 });
-
 // Cargar semestres
 async function loadSemesters() {
   semestersGrid.innerHTML = '';
   const col = collection(db, `users/${currentUser.uid}/semesters`);
   const snap = await getDocs(col);
   let currentFound = false;
-
   snap.forEach(docSnap => {
     const data = docSnap.data();
     const card = document.createElement('div');
@@ -807,7 +806,6 @@ async function loadSemesters() {
     `;
     card.onclick = () => openSemester(docSnap.id, data.code, data.startDate, data.endDate, data.isCurrent, data.subjects || []);
     semestersGrid.appendChild(card);
-
     if (data.isCurrent) {
       currentFound = true;
       activeSemesterId = docSnap.id;
@@ -819,20 +817,17 @@ async function loadSemesters() {
       showUpcomingEvents(data.subjects || []);
     }
   });
-
   const addCard = document.createElement('div');
   addCard.className = 'semester-card add-semester-card';
   addCard.innerHTML = '<i class="fa-solid fa-plus" style="font-size:2.5em;"></i><p>Nuevo</p>';
   addCard.onclick = () => document.getElementById("addSemesterModal").style.display = 'flex';
   semestersGrid.appendChild(addCard);
-
   if (!currentFound && snap.size > 0) {
     const firstId = snap.docs[0].id;
     await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, firstId), { isCurrent: true });
     loadSemesters();
   }
 }
-
 // Update week
 function updateWeekInfo() {
   const now = new Date();
@@ -847,27 +842,22 @@ function updateWeekInfo() {
   currentWeekEl.textContent = week;
   nextWeekEl.textContent = week + 1;
 }
-
 // Upcoming - ordenado por fecha ascendente y limitado a 7 más cercanos
 function showUpcomingEvents(subjects) {
   upcomingEventsList.innerHTML = "";
   let evals = [];
-
   subjects.forEach(s => {
     (s.evaluations || []).forEach(e => {
       evals.push({ ...e, subject: s.name });
     });
   });
-
   // Ordenar por fecha ASCENDENTE (más pronto primero)
   evals.sort((a, b) => new Date(a.date) - new Date(b.date));
-
   // Filtrar solo futuros y tomar los primeros 7
   const now = new Date();
   const upcoming = evals
     .filter(e => new Date(e.date) >= now)
     .slice(0, 7);
-
   upcoming.forEach(e => {
     const div = document.createElement('div');
     div.className = 'upcoming-item';
@@ -881,12 +871,10 @@ function showUpcomingEvents(subjects) {
     `;
     upcomingEventsList.appendChild(div);
   });
-
   if (!upcoming.length) {
     upcomingEventsList.innerHTML = '<p style="color:var(--muted);text-align:center;">No hay eventos próximos</p>';
   }
 }
-
 // Add semester
 document.getElementById("saveSemesterBtn").onclick = async () => {
   const code = document.getElementById("semesterCode").value.trim();
@@ -901,7 +889,6 @@ document.getElementById("saveSemesterBtn").onclick = async () => {
     loadSemesters();
   }
 };
-
 // Open semester - ahora ordena el cronograma por fecha ascendente
 function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterId = id;
@@ -909,7 +896,6 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterStart = new Date(start);
   activeSemesterEnd = new Date(end);
   updateWeekInfo();
-
   semesterTitle.innerHTML = `
     ${code}
     <label class="switch">
@@ -917,10 +903,8 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
       <span class="slider"></span>
     </label>
   `;
-
   subjectsGrid.innerHTML = '';
   cronogramaBody.innerHTML = '';
-
   // Preparar todas las evaluaciones para ordenarlas
   let allEvals = [];
   subjects.forEach((sub, subIndex) => {
@@ -934,7 +918,6 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
     `;
     card.querySelector('h4').onclick = () => openSubject(sub.name, sub.evaluations || []);
     subjectsGrid.appendChild(card);
-
     (sub.evaluations || []).forEach((ev, evIndex) => {
       allEvals.push({
         ...ev,
@@ -944,10 +927,8 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
       });
     });
   });
-
   // Ordenar todas las evaluaciones por fecha ascendente
   allEvals.sort((a, b) => new Date(a.date) - new Date(b.date));
-
   // Renderizar en el orden correcto
   allEvals.forEach(item => {
     const tr = document.createElement('tr');
@@ -962,12 +943,10 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
     `;
     cronogramaBody.appendChild(tr);
   });
-
   homeView.style.display = 'none';
   semesterView.style.display = 'block';
   subjectView.style.display = 'none';
 }
-
 // Toggle current
 window.toggleCurrent = async function(id, checked) {
   await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, id), { isCurrent: checked });
@@ -982,7 +961,6 @@ window.toggleCurrent = async function(id, checked) {
   const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, id));
   openSemester(id, snap.data().code, snap.data().startDate, snap.data().endDate, checked, snap.data().subjects || []);
 };
-
 // Delete subject
 window.deleteSubject = async function(index) {
   if (!confirm("¿Eliminar esta materia?")) return;
@@ -994,7 +972,6 @@ window.deleteSubject = async function(index) {
   openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, subjects);
   loadSemesters();
 };
-
 // Delete eval
 window.deleteEval = async function(subjectName, index) {
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
@@ -1010,10 +987,8 @@ window.deleteEval = async function(subjectName, index) {
   openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, subjects);
   loadSemesters();
 };
-
 // Add subject
 document.getElementById("addSubjectBtn").onclick = () => document.getElementById("addSubjectModal").style.display = 'flex';
-
 document.getElementById("saveSubjectBtn").onclick = async () => {
   const name = document.getElementById("subjectNameInput").value.trim();
   if (name) {
@@ -1026,7 +1001,6 @@ document.getElementById("saveSubjectBtn").onclick = async () => {
     openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, snap.data().subjects || []);
   }
 };
-
 // Add evaluation
 document.getElementById("addEvaluationBtn").onclick = () => {
   if (!activeSubjectName) {
@@ -1035,22 +1009,18 @@ document.getElementById("addEvaluationBtn").onclick = () => {
   }
   document.getElementById("addEvaluationModal").style.display = 'flex';
 };
-
 document.getElementById("saveEvalBtn").onclick = async () => {
   const name = document.getElementById("evalNameInput").value.trim();
   const date = document.getElementById("evalDateInput").value;
   const week = document.getElementById("evalWeekInput").value;
   const percent = document.getElementById("evalPercentInput").value;
-
   if (!name || !date || !week || !percent) {
     alert("Completa todos los campos");
     return;
   }
-
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
   const snap = await getDoc(ref);
   let subjects = snap.data().subjects || [];
-
   let found = false;
   subjects = subjects.map(s => {
     if (s.name === activeSubjectName) {
@@ -1066,21 +1036,17 @@ document.getElementById("saveEvalBtn").onclick = async () => {
     }
     return s;
   });
-
   if (!found) {
     alert("Error: No se encontró la materia activa");
     return;
   }
-
   await updateDoc(ref, { subjects });
   document.getElementById("addEvaluationModal").style.display = 'none';
-
   const updatedSnap = await getDoc(ref);
   const updatedSubjects = updatedSnap.data().subjects || [];
   openSubject(activeSubjectName, updatedSubjects.find(s => s.name === activeSubjectName).evaluations);
   loadSemesters();
 };
-
 // Update grade
 window.updateGrade = async function(subjectName, index, value) {
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
@@ -1097,7 +1063,6 @@ window.updateGrade = async function(subjectName, index, value) {
   openSubject(subjectName, updatedSnap.data().subjects.find(s => s.name === subjectName).evaluations);
   loadSemesters();
 };
-
 // Open subject
 function openSubject(name, evals) {
   activeSubjectName = name;
@@ -1122,7 +1087,6 @@ function openSubject(name, evals) {
       }
     });
     evalsList.appendChild(div);
-
     remainingPercent += ev.percent;
     if (ev.grade !== undefined) {
       totalProgress += ev.grade * (ev.percent / 100);
@@ -1141,7 +1105,6 @@ function openSubject(name, evals) {
   semesterView.style.display = 'none';
   subjectView.style.display = 'block';
 }
-
 // Delete semester
 document.getElementById("deleteSemesterBtn").onclick = async () => {
   if (confirm("¿Eliminar semestre?")) {
@@ -1150,19 +1113,16 @@ document.getElementById("deleteSemesterBtn").onclick = async () => {
     loadSemesters();
   }
 };
-
 // Navigation
 window.backToHome = () => {
   homeView.style.display = 'block';
   semesterView.style.display = 'none';
   subjectView.style.display = 'none';
 };
-
 window.backToSemester = () => {
   semesterView.style.display = 'block';
   subjectView.style.display = 'none';
 };
-
 // Add notification
 async function addNotification(message) {
   await addDoc(collection(db, `users/${currentUser.uid}/notifications`), {
@@ -1172,7 +1132,6 @@ async function addNotification(message) {
   });
   loadNotifications();
 }
-
 // Load notifications
 async function loadNotifications() {
   const col = collection(db, `users/${currentUser.uid}/notifications`);
@@ -1191,7 +1150,6 @@ async function loadNotifications() {
   unreadBadge.textContent = unread;
   unreadBadge.style.display = unread > 0 ? 'block' : 'none';
 }
-
 // Mark as read when opening
 notificationsBtn.onclick = () => {
   notificationsModal.style.display = 'flex';
@@ -1201,7 +1159,6 @@ notificationsBtn.onclick = () => {
   });
   loadNotifications();
 };
-
 // Check reminders
 async function checkReminders() {
   if (!activeSemesterId) return;
