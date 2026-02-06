@@ -689,15 +689,18 @@ input:checked + .slider:before { transform: translateX(22px); }
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, arrayUnion, getDoc, deleteDoc, Timestamp, query, orderBy, limit, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC-VMxhcl1Jq-Z7mYAjR4CmC2KoW-zUT0I",
   authDomain: "agenda-academica-aed7f.firebaseapp.com",
   projectId: "agenda-academica-aed7f"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
+
 // DOM
 const loginScreen = document.getElementById("loginScreen");
 const dashboard = document.getElementById("dashboard");
@@ -726,12 +729,14 @@ const unreadBadge = document.getElementById("unreadBadge");
 const notificationsModal = document.getElementById("notificationsModal");
 const notificationsList = document.getElementById("notificationsList");
 const welcomeModal = document.getElementById("welcomeModal");
+
 let currentUser = null;
 let activeSemesterId = null;
 let activeSemesterCode = null;
 let activeSemesterStart = null;
 let activeSemesterEnd = null;
 let activeSubjectName = null;
+
 // Reloj
 function updateLiveClock() {
   const now = new Date();
@@ -743,8 +748,10 @@ function updateLiveClock() {
 }
 setInterval(updateLiveClock, 1000);
 updateLiveClock();
+
 // Auth
 document.getElementById("googleLogin").onclick = () => signInWithPopup(auth, provider);
+
 onAuthStateChanged(auth, user => {
   if (user) {
     currentUser = user;
@@ -762,6 +769,7 @@ onAuthStateChanged(auth, user => {
     loginScreen.style.display = 'flex';
   }
 });
+
 // Verificar si es el primer login → mostrar bienvenida
 async function checkFirstLogin() {
   const userDocRef = doc(db, `users/${currentUser.uid}`);
@@ -772,6 +780,7 @@ async function checkFirstLogin() {
     await addNotification("¡Bienvenido a GOKU! Gracias por estar aquí. Organiza tu semestre, lleva control de tus notas y alcanza tus metas con fuerza y buena vibra. ¡Vamos con todo! 💙🔥");
   }
 }
+
 // Settings
 document.getElementById("settingsBtn").onclick = () => {
   const dd = document.getElementById("settingsDropdown");
@@ -795,10 +804,12 @@ document.getElementById("saveProfileBtn").onclick = () => {
     });
   }
 };
+
 // Cerrar modales
 document.querySelectorAll(".modal").forEach(modal => {
   modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
 });
+
 // Cargar semestres
 async function loadSemesters() {
   semestersGrid.innerHTML = '';
@@ -837,6 +848,7 @@ async function loadSemesters() {
     loadSemesters();
   }
 }
+
 // Update week
 function updateWeekInfo() {
   const now = new Date();
@@ -851,7 +863,8 @@ function updateWeekInfo() {
   currentWeekEl.textContent = week;
   nextWeekEl.textContent = week + 1;
 }
-// Upcoming - ordenado por fecha ascendente y limitado a 7 más cercanos
+
+// Upcoming events
 function showUpcomingEvents(subjects) {
   upcomingEventsList.innerHTML = "";
   let evals = [];
@@ -860,13 +873,9 @@ function showUpcomingEvents(subjects) {
       evals.push({ ...e, subject: s.name });
     });
   });
-  // Ordenar por fecha ASCENDENTE (más pronto primero)
   evals.sort((a, b) => new Date(a.date) - new Date(b.date));
-  // Filtrar solo futuros y tomar los primeros 7
   const now = new Date();
-  const upcoming = evals
-    .filter(e => new Date(e.date) >= now)
-    .slice(0, 7);
+  const upcoming = evals.filter(e => new Date(e.date) >= now).slice(0, 7);
   upcoming.forEach(e => {
     const div = document.createElement('div');
     div.className = 'upcoming-item';
@@ -884,6 +893,7 @@ function showUpcomingEvents(subjects) {
     upcomingEventsList.innerHTML = '<p style="color:var(--muted);text-align:center;">No hay eventos próximos</p>';
   }
 }
+
 // Add semester
 document.getElementById("saveSemesterBtn").onclick = async () => {
   const code = document.getElementById("semesterCode").value.trim();
@@ -898,7 +908,8 @@ document.getElementById("saveSemesterBtn").onclick = async () => {
     loadSemesters();
   }
 };
-// Open semester - ahora ordena el cronograma por fecha ascendente
+
+// Open semester
 function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterId = id;
   activeSemesterCode = code;
@@ -914,7 +925,6 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   `;
   subjectsGrid.innerHTML = '';
   cronogramaBody.innerHTML = '';
-  // Preparar todas las evaluaciones para ordenarlas
   let allEvals = [];
   subjects.forEach((sub, subIndex) => {
     const card = document.createElement('div');
@@ -936,9 +946,7 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
       });
     });
   });
-  // Ordenar todas las evaluaciones por fecha ascendente
   allEvals.sort((a, b) => new Date(a.date) - new Date(b.date));
-  // Renderizar en el orden correcto
   allEvals.forEach(item => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -956,6 +964,7 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   semesterView.style.display = 'block';
   subjectView.style.display = 'none';
 }
+
 // Toggle current
 window.toggleCurrent = async function(id, checked) {
   await updateDoc(doc(db, `users/${currentUser.uid}/semesters`, id), { isCurrent: checked });
@@ -970,6 +979,7 @@ window.toggleCurrent = async function(id, checked) {
   const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, id));
   openSemester(id, snap.data().code, snap.data().startDate, snap.data().endDate, checked, snap.data().subjects || []);
 };
+
 // Delete subject
 window.deleteSubject = async function(index) {
   if (!confirm("¿Eliminar esta materia?")) return;
@@ -981,6 +991,7 @@ window.deleteSubject = async function(index) {
   openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, subjects);
   loadSemesters();
 };
+
 // Delete eval
 window.deleteEval = async function(subjectName, index) {
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
@@ -996,6 +1007,7 @@ window.deleteEval = async function(subjectName, index) {
   openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, subjects);
   loadSemesters();
 };
+
 // Add subject
 document.getElementById("addSubjectBtn").onclick = () => document.getElementById("addSubjectModal").style.display = 'flex';
 document.getElementById("saveSubjectBtn").onclick = async () => {
@@ -1010,6 +1022,7 @@ document.getElementById("saveSubjectBtn").onclick = async () => {
     openSemester(activeSemesterId, activeSemesterCode, activeSemesterStart.toISOString().split('T')[0], activeSemesterEnd.toISOString().split('T')[0], true, snap.data().subjects || []);
   }
 };
+
 // Add evaluation
 document.getElementById("addEvaluationBtn").onclick = () => {
   if (!activeSubjectName) {
@@ -1056,6 +1069,7 @@ document.getElementById("saveEvalBtn").onclick = async () => {
   openSubject(activeSubjectName, updatedSubjects.find(s => s.name === activeSubjectName).evaluations);
   loadSemesters();
 };
+
 // Update grade
 window.updateGrade = async function(subjectName, index, value) {
   const ref = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
@@ -1072,6 +1086,7 @@ window.updateGrade = async function(subjectName, index, value) {
   openSubject(subjectName, updatedSnap.data().subjects.find(s => s.name === subjectName).evaluations);
   loadSemesters();
 };
+
 // Open subject
 function openSubject(name, evals) {
   activeSubjectName = name;
@@ -1114,6 +1129,7 @@ function openSubject(name, evals) {
   semesterView.style.display = 'none';
   subjectView.style.display = 'block';
 }
+
 // Delete semester
 document.getElementById("deleteSemesterBtn").onclick = async () => {
   if (confirm("¿Eliminar semestre?")) {
@@ -1122,6 +1138,7 @@ document.getElementById("deleteSemesterBtn").onclick = async () => {
     loadSemesters();
   }
 };
+
 // Navigation
 window.backToHome = () => {
   homeView.style.display = 'block';
@@ -1137,6 +1154,7 @@ window.backToSemester = () => {
   semesterView.style.display = 'block';
   subjectView.style.display = 'none';
 };
+
 // Add notification
 async function addNotification(message) {
   await addDoc(collection(db, `users/${currentUser.uid}/notifications`), {
@@ -1146,6 +1164,7 @@ async function addNotification(message) {
   });
   loadNotifications();
 }
+
 // Load notifications
 async function loadNotifications() {
   const col = collection(db, `users/${currentUser.uid}/notifications`);
@@ -1167,6 +1186,7 @@ async function loadNotifications() {
   unreadBadge.textContent = unread;
   unreadBadge.style.display = unread > 0 ? 'block' : 'none';
 }
+
 // Delete notification
 window.deleteNotification = async function(id) {
   if (confirm("¿Eliminar esta notificación?")) {
@@ -1174,6 +1194,7 @@ window.deleteNotification = async function(id) {
     loadNotifications();
   }
 };
+
 // Mark as read when opening
 notificationsBtn.onclick = () => {
   notificationsModal.style.display = 'flex';
@@ -1183,23 +1204,52 @@ notificationsBtn.onclick = () => {
   });
   loadNotifications();
 };
-// Check reminders
+
+// Check reminders - ¡ACTUALIZADO! Solo una vez al día por evaluación
 async function checkReminders() {
   if (!activeSemesterId) return;
-  const snap = await getDoc(doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId));
+  const semesterRef = doc(db, `users/${currentUser.uid}/semesters`, activeSemesterId);
+  const snap = await getDoc(semesterRef);
   const subjects = snap.data().subjects || [];
   const now = new Date();
+  const today = now.toISOString().split('T')[0]; // YYYY-MM-DD
+
+  let needsUpdate = false;
+
   subjects.forEach(sub => {
-    (sub.evaluations || []).forEach(ev => {
+    if (!sub.evaluations) return;
+
+    sub.evaluations.forEach(ev => {
       const evDate = new Date(ev.date);
       const daysToEv = Math.ceil((evDate - now) / 86400000);
-      if (daysToEv > 0 && daysToEv <= 7) {
-        addNotification(`¡Ojo! ${ev.name} de ${sub.name} está a ${daysToEv} día(s). ¡Prepárate! 💪`);
+
+      if (daysToEv >= 1 && daysToEv <= 7) {
+        // Verificar si ya se envió hoy
+        const lastSent = ev.lastReminderSent;
+        if (lastSent === today) {
+          return; // ya enviado hoy → no hacer nada
+        }
+
+        // Enviar notificación
+        const message = `¡Ojo! ${ev.name} de ${sub.name} está a ${daysToEv} día${daysToEv === 1 ? '' : 's'}. ¡Prepárate! 💪`;
+        addNotification(message);
+
+        // Marcar como enviado hoy
+        ev.lastReminderSent = today;
+        needsUpdate = true;
       }
     });
   });
+
+  // Si hubo cambios (se enviaron recordatorios nuevos), guardar en Firestore
+  if (needsUpdate) {
+    await updateDoc(semesterRef, { subjects });
+    // Opcional: refrescar la bandeja inmediatamente
+    loadNotifications();
+  }
 }
 </script>
 </body>
 </html>
+
 
