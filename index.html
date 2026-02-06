@@ -7,27 +7,28 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 <style>
 :root {
-  --primary: #0033a0;
-  --accent: #0052cc;
-  --bg: #f4f6fb;
-  --card: #e3f2fd;
-  --text: #1f2937;
-  --muted: #6b7280;
+  --primary: #0f172a;
+  --accent: #3b82f6;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
   --success: #10b981;
   --danger: #ef4444;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
 }
 
-/* ── LOGIN (versión modificada: sin imágenes, sensación de seguridad) ── */
+/* LOGIN - versión moderna, limpia y segura */
 #loginScreen {
   min-height: 100vh;
-  background: var(--bg);
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,69 +37,73 @@ body {
 
 .login-card {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 48px 40px;
   max-width: 420px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
 }
 
-.login-card h2 {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: var(--primary);
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(59,130,246,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.login-card h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
   margin: 0 0 8px;
-  letter-spacing: -0.5px;
+  letter-spacing: -1.5px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.login-card p {
+.login-card .tagline {
   color: var(--muted);
-  font-size: 1.1rem;
-  margin: 0 0 32px;
-}
-
-.security-info {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin: 24px 0 40px;
-  line-height: 1.5;
-  background: #f1f5f9;
-  padding: 16px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0 0 48px;
 }
 
 .google-btn {
   width: 100%;
-  padding: 14px 24px;
+  padding: 16px 24px;
   border-radius: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #cbd5e1;
   background: white;
   font-size: 1.05rem;
   font-weight: 600;
-  color: #111827;
+  color: #0f172a;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  transition: all 0.2s;
+  gap: 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .google-btn:hover {
-  background: #f8fafc;
-  border-color: #9ca3af;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(59,130,246,0.18);
+  border-color: #3b82f6;
 }
 
 .google-btn i {
   color: #4285F4;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
-/* ── Todo lo demás se mantiene exactamente igual ── */
+/* ── El resto del CSS se mantiene exactamente igual al original ── */
 #dashboard { display: none; }
 .topbar {
   background: white;
@@ -533,17 +538,11 @@ input:checked + .slider:before { transform: translateX(22px); }
 </head>
 <body>
 
-<!-- LOGIN (solo esta sección fue modificada) -->
+<!-- LOGIN MEJORADO -->
 <div id="loginScreen">
   <div class="login-card">
-    <h2>GOKU</h2>
-    <p>Asistente Académico Virtual</p>
-    
-    <div class="security-info">
-      Conexión segura mediante Google<br>
-      • No guardamos tu contraseña<br>
-      • Solo usamos tu nombre y correo
-    </div>
+    <h1>GOKU</h1>
+    <div class="tagline">Tu asistente académico inteligente</div>
 
     <button class="google-btn" id="googleLogin">
       <i class="fa-brands fa-google"></i>
@@ -552,7 +551,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   </div>
 </div>
 
-<!-- DASHBOARD (sin ningún cambio) -->
+<!-- DASHBOARD (exactamente igual) -->
 <div id="dashboard">
   <div class="topbar">
     <div class="brand">GOKU</div>
@@ -587,7 +586,6 @@ input:checked + .slider:before { transform: translateX(22px); }
     <div class="subjects-grid" id="subjectsGrid"></div>
     <h3 style="margin-top:32px;">Cronograma completo</h3>
    
-    <!-- Contenedor con scroll horizontal -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -621,7 +619,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 <!-- Modales (sin cambios) -->
 <div id="editProfileModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
     <h3>Editar perfil</h3>
     <input id="newDisplayName" placeholder="Nombre visible">
     <button class="primary-btn" id="saveProfileBtn">Guardar cambios</button>
@@ -629,7 +627,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 </div>
 <div id="addSemesterModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
     <h3>Nuevo semestre</h3>
     <input id="semesterCode" placeholder="Ej: 2026-1">
     <input id="semesterStartDate" type="date">
@@ -639,7 +637,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 </div>
 <div id="addSubjectModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
     <h3>Nueva materia</h3>
     <input id="subjectNameInput" placeholder="Ej: Álgebra Lineal">
     <button class="primary-btn" id="saveSubjectBtn">Agregar</button>
@@ -647,7 +645,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 </div>
 <div id="addEvaluationModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
     <h3>Nueva evaluación</h3>
     <input id="evalNameInput" placeholder="Nombre (Quiz 1, Parcial, etc)">
     <input id="evalDateInput" type="date">
@@ -658,14 +656,14 @@ input:checked + .slider:before { transform: translateX(22px); }
 </div>
 <div id="notificationsModal" class="modal">
   <div class="modal-card">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
     <h3>Notificaciones</h3>
     <div id="notificationsList" style="max-height:400px; overflow-y:auto;"></div>
   </div>
 </div>
 <div id="welcomeModal" class="modal">
   <div class="modal-card" style="text-align:center;">
-    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">×</span>
+    <span class="modal-close" onclick="this.closest('.modal').style.display='none'">&times;</span>
     <h2>¡Bienvenido a GOKU, Samuel! 🌟</h2>
     <p>¡Qué alegría inmensa tenerte aquí con nosotros!</p>
     <p>GOKU está diseñado con mucho cariño para acompañarte en este semestre y en todos los que vengan. Queremos verte organizado, motivado y alcanzando cada meta que te propongas. 💙</p>
@@ -851,9 +849,7 @@ function showUpcomingEvents(subjects) {
       evals.push({ ...e, subject: s.name });
     });
   });
-  // Ordenar por fecha ASCENDENTE (más pronto primero)
   evals.sort((a, b) => new Date(a.date) - new Date(b.date));
-  // Filtrar solo futuros y tomar los primeros 7
   const now = new Date();
   const upcoming = evals
     .filter(e => new Date(e.date) >= now)
@@ -889,7 +885,7 @@ document.getElementById("saveSemesterBtn").onclick = async () => {
     loadSemesters();
   }
 };
-// Open semester - ahora ordena el cronograma por fecha ascendente
+// Open semester
 function openSemester(id, code, start, end, isCurrent, subjects) {
   activeSemesterId = id;
   activeSemesterCode = code;
@@ -905,7 +901,6 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
   `;
   subjectsGrid.innerHTML = '';
   cronogramaBody.innerHTML = '';
-  // Preparar todas las evaluaciones para ordenarlas
   let allEvals = [];
   subjects.forEach((sub, subIndex) => {
     const card = document.createElement('div');
@@ -927,9 +922,7 @@ function openSemester(id, code, start, end, isCurrent, subjects) {
       });
     });
   });
-  // Ordenar todas las evaluaciones por fecha ascendente
   allEvals.sort((a, b) => new Date(a.date) - new Date(b.date));
-  // Renderizar en el orden correcto
   allEvals.forEach(item => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
